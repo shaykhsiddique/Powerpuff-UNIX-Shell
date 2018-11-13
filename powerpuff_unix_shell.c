@@ -21,7 +21,7 @@
 
 char current_working_dir[sizeofarray];
 
-
+//one_process is a global structure of all commands and commnd_paramrt
 
 //single command structure
 struct single_commands{
@@ -104,6 +104,28 @@ void print_process_str(int total_no_of_process){
 
 }
 
+void cmd_cd(int process_id){
+char *directory = one_process[process_id].commnd_paramrt;
+int ret;
+
+    ret = chdir (directory);   //On success, zero is returned.  On error, -1 is returned, and errno is set appropriately
+
+    if(ret){
+        perror("Error ");
+    }
+}
+
+void all_process_management(int numofProcess){
+
+    for(int i=0; i<numofProcess && one_process[i].commnd_word!=NULL; i++){
+        if(strcmp(one_process[i].commnd_word, "cd") == 0){
+            cmd_cd(i);
+        }else break;
+    }
+}
+
+
+
 
 void creatNewProcess(){
     pid_t pid =fork();
@@ -136,7 +158,8 @@ int main(int argc, char *argv[]){
         print_path();
         cmmd = input_command();
         int noOfProcess = command_parsing(cmmd);
-        print_process_str(noOfProcess);
+        all_process_management(noOfProcess);
+//        print_process_str(noOfProcess);
         if(strcmp(cmmd.comm_line,"quit")== 0) break;
         //creatNewProcess();
     }
