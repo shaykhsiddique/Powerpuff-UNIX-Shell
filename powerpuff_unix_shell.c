@@ -3,7 +3,7 @@
 #include <sys/types.h>
 #include <stdlib.h>
 #include <string.h>
-
+#include <dirent.h>
     //define custom variables
 #define debugi(acb) printf("%d\n", acb)
 #define debugs(acb) printf("%s\n", acb)
@@ -90,7 +90,7 @@ int command_parsing(struct single_commands comd_all){
 
 
 
-void print_process_str(int total_no_of_process){
+void print_process_str(int total_no_of_process){ //this is a sample of test printing
     for(int i=0; i<total_no_of_process && one_process[i].commnd_word!=NULL; i++){
         printf("Command: %s  -->Perameters: ", one_process[i].commnd_word);
 
@@ -115,27 +115,25 @@ int ret;
     }
 }
 
-void all_process_management(int numofProcess){
 
-    for(int i=0; i<numofProcess && one_process[i].commnd_word!=NULL; i++){
-        if(strcmp(one_process[i].commnd_word, "cd") == 0){
-            cmd_cd(i);
-        }else break;
-    }
-}
-
-
-
-
-void creatNewProcess(){
+void execute_ls(int process_id){
     pid_t pid =fork();
     pid_t tpid;
     if(!pid){
         //child process started
 //        char *const parmList[] = {"/bin/ls", "", current_working_dir, NULL};
-        char *const parmList[] = {"/bin/cd", "-l", current_working_dir, NULL};
-        execvp("ls", parmList);
-        printf("Return not expected. Must be an execvp() error.n");
+
+        struct dirent *de;
+        DIR *dr = opendir(".");
+
+        if (dr == NULL) // opendir returns NULL if couldn't open directory
+        {
+            printf("Could not open current directory" );
+        }
+        while ((de = readdir(dr)) != NULL)
+                printf("%s\n", de->d_name);
+
+        closedir(dr);
 
     }else if(pid==-1){
         //error to create process. Need error msg
@@ -144,11 +142,20 @@ void creatNewProcess(){
             pid_t tpid = wait(&pid);   //parent process wait untill child process terminated.
 
     }
-
-
 }
 
 
+// for all precess executing commands
+void all_process_management(int numofProcess){
+
+    for(int i=0; i<numofProcess && one_process[i].commnd_word!=NULL; i++){
+        if(strcmp(one_process[i].commnd_word, "cd") == 0){
+            cmd_cd(i);
+        }else if(strcmp(one_process[i].commnd_word, "ls") == 0){
+            execute_ls(i);
+        }else break;
+    }
+}
 
 
 int main(int argc, char *argv[]){
@@ -166,3 +173,4 @@ int main(int argc, char *argv[]){
 
     return 0;
 }
+
