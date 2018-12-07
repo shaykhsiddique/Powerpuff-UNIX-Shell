@@ -249,18 +249,18 @@ void all_process_management(int numofProcess){
             if(!pharmNo) execute_ls(i);
             else errr = 1;
         }else if(strcmp(one_process[i].commnd_word, "mkdir") == 0){
-            if(!pharmNo) execute_mkdir(i);
+            if(pharmNo) execute_mkdir(i);
             else errr = 1;
         }else if(strcmp(one_process[i].commnd_word, "touch") == 0){
-            if(!pharmNo) execute_touch(i);
+            if(pharmNo) execute_touch(i);
             else errr = 1;
         }else if(strcmp(one_process[i].commnd_word, "cp") == 0){
             execute_cp(i);
         }else if(strcmp(one_process[i].commnd_word, "cat") == 0){
-            if(!pharmNo) execute_cat(i);
+            if(pharmNo) execute_cat(i);
             else errr = 1;
         }else if(strcmp(one_process[i].commnd_word, "echo") == 0){
-            if(!pharmNo) execute_echo(i);
+            if(pharmNo) execute_echo(i);
             else errr = 1;
         }else if(strcmp(one_process[i].commnd_word, "exit") == 0){
             exit(0);
