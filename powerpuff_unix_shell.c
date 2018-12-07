@@ -262,6 +262,9 @@ void all_process_management(int numofProcess){
         }else if(strcmp(one_process[i].commnd_word, "echo") == 0){
             if(pharmNo) execute_echo(i);
             else errr = 1;
+        }else if(strcmp(one_process[i].commnd_word, "clear") == 0){
+            if(!pharmNo) system("clear");
+            else errr = 1;
         }else if(strcmp(one_process[i].commnd_word, "exit") == 0){
             exit(0);
         }
