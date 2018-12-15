@@ -263,7 +263,7 @@ void all_process_management(int numofProcess){
             if(pharmNo) execute_echo(i);
             else errr = 1;
         }else if(strcmp(one_process[i].commnd_word, "clear") == 0){
-            if(!pharmNo) system("clear");
+            if(!pharmNo) clear_commands(i);
             else errr = 1;
         }else if(strcmp(one_process[i].commnd_word, "exit") == 0){
             exit(0);
@@ -277,8 +277,8 @@ void all_process_management(int numofProcess){
 }
 
 void clear_commands(int numofProcess){
-    for(int i=0; i<numofProcess; i++){
-        strcpy(one_process[i].commnd_word, "");
+    for(int i=0; i<80; i++){
+    	printf("\n");
     }
 }
 
